@@ -13,7 +13,7 @@ public abstract class Grafo {
     protected Grafo(BufferedReader fileReader) throws IOException {
         String line;
         boolean firstLine = true;
-        // Para evitar processamento posterior. Perco em memória mas ganho muito em processamento.
+        // Para evitar processamento posterior. Perco em memória durante a execução do algoritmo, mas ganho muito em processamento.
         HashMap<String, Integer> graus = null;
         while ((line = fileReader.readLine()) != null) {
             if (firstLine) {
