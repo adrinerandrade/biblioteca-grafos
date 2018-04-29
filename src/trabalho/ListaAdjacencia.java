@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class ListaAdjacencia extends Grafo {
 
-    private HashMap<String, LinkedList<String>> vertices;
+    private HashMap<Integer, LinkedList<Integer>> vertices;
 
     @Override
     public double getConsumoDeBytesEmMemoria() {
@@ -24,17 +24,17 @@ public class ListaAdjacencia extends Grafo {
     }
 
     @Override
-    protected void addAdjacencia(String u, String v) {
+    protected void addAdjacencia(Integer u, Integer v) {
         obtemOuCriaVertice(u).add(v);
     }
 
     @Override
-    protected void addLaco(String u) {
+    protected void addLaco(Integer u) {
         obtemOuCriaVertice(u).add(u);
     }
 
     @Override
-    protected void addVerticeIsolado(String nomeVertice) {
+    protected void addVerticeIsolado(Integer nomeVertice) {
         vertices.put(nomeVertice, new LinkedList<>());
     }
 
@@ -44,12 +44,12 @@ public class ListaAdjacencia extends Grafo {
     }
 
     @Override
-    protected boolean contemVertice(String nomeVertice) {
+    protected boolean contemVertice(Integer nomeVertice) {
         return vertices.containsKey(nomeVertice);
     }
 
-    private LinkedList<String> obtemOuCriaVertice(String nomeVertice) {
-        LinkedList<String> adjacentes = vertices.get(nomeVertice);
+    private LinkedList<Integer> obtemOuCriaVertice(Integer nomeVertice) {
+        LinkedList<Integer> adjacentes = vertices.get(nomeVertice);
         if (adjacentes == null) {
             adjacentes = new LinkedList<>();
             vertices.put(nomeVertice, adjacentes);

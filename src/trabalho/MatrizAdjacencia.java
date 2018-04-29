@@ -22,21 +22,18 @@ public class MatrizAdjacencia extends Grafo {
     }
 
     @Override
-    protected void addAdjacencia(String u, String v) {
-        int intU = Integer.parseInt(u);
-        int intV = Integer.parseInt(v);
-        matriz[intU][intV] += 1;
-        matriz[intV][intU] += 1;
+    protected void addAdjacencia(Integer u, Integer v) {
+        matriz[u][v] += 1;
+        matriz[v][u] += 1;
     }
 
     @Override
-    protected void addLaco(String u) {
-        int intU = Integer.parseInt(u);
-        matriz[intU][intU] += 2;
+    protected void addLaco(Integer u) {
+        matriz[u][u] += 2;
     }
 
     @Override
-    protected void addVerticeIsolado(String nomeVertice) {
+    protected void addVerticeIsolado(Integer nomeVertice) {
 
     }
 
@@ -46,7 +43,7 @@ public class MatrizAdjacencia extends Grafo {
     }
 
     @Override
-    protected boolean contemVertice(String nomeVertice) {
+    protected boolean contemVertice(Integer nomeVertice) {
         return false;
     }
 }

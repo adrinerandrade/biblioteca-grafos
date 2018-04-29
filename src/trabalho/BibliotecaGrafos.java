@@ -56,7 +56,7 @@ public class BibliotecaGrafos {
     }
 
     private void escreverOutput(Grafo grafo) {
-        try (FileWriter fileWriter = new FileWriter("C:/git/grafos/biblioteca-grafos/output/output.txt")) {
+        try (FileWriter fileWriter = new FileWriter("./output/output.txt")) {
 
             fileWriter.write(String.format("Número de vértices: %s\n", grafo.getNumeroDeVertices()));
             fileWriter.write(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
