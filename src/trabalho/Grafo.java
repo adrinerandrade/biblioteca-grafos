@@ -58,6 +58,18 @@ public abstract class Grafo {
     public int getNumeroDeVertices() {
         return numeroDeVertices;
     }
+    
+    public void buscaProfundidade(Vertice vertice) {
+    	for(Vertice verticeAtual: vertice.getVerticesAdjacentes()) {
+    		int nivel = vertice.getNivel();
+    		if(verticeAtual.getCor() == "branco") {
+    			verticeAtual.setCor("cinza");
+    			verticeAtual.setNivel(++nivel);
+    			buscaProfundidade(verticeAtual);
+    		}
+    	}
+    	vertice.setCor("preto");
+    }
 
     private void somaGrau(Integer nomeVertice, HashMap<Integer, Integer> graus) {
         graus.put(nomeVertice, graus.get(nomeVertice) + 1);
@@ -73,6 +85,8 @@ public abstract class Grafo {
         }
     }
 
+    protected abstract Vertice[] getVerticesAdjacentes(int vertice);
+    
     protected abstract void criarEstrutura(int quantidadeVertices);
 
     protected abstract void addAdjacencia(Integer u, Integer v);
