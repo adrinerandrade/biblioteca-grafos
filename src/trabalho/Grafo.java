@@ -10,8 +10,6 @@ public abstract class Grafo {
     private TreeSet<Integer> sequenciaGraus;
     private int numeroDeVertices;
 
-    public abstract double getConsumoDeBytesEmMemoria();
-
     protected Grafo(BufferedReader fileReader) throws IOException {
         String line;
         boolean firstLine = true;
@@ -27,17 +25,18 @@ public abstract class Grafo {
                 String[] verticesAdjacentes = line.split(" ");
                 String v1 = verticesAdjacentes[0];
                 String v2 = verticesAdjacentes[1];
-                addAdjacencia(v1, v2);
                 inicializaGrausSeNecessario(v1, graus);
-                inicializaGrausSeNecessario(v2, graus);
-                somaGrau(v1, graus);
-                // Se não for um ciclo
-                if (!v1.equals(v2)) {
+                // Se for laço
+                if (v1.equals(v2)) {
+                    addLaco(v1);
+                    // laço tem grau 2
+                    somaGrauLaco(v1, graus);
+                } else {
+                    inicializaGrausSeNecessario(v2, graus);
+                    addAdjacencia(v1, v2);
+                    somaGrau(v1, graus);
                     addAdjacencia(v2, v1);
                     somaGrau(v2, graus);
-                } else {
-                    // ciclo tem grau 2
-                    somaGrau(v1, graus);
                 }
             }
         }
@@ -64,6 +63,10 @@ public abstract class Grafo {
         graus.put(nomeVertice, graus.get(nomeVertice) + 1);
     }
 
+    private void somaGrauLaco(String nomeVertice, HashMap<String, Integer> graus) {
+        graus.put(nomeVertice, graus.get(nomeVertice) + 2);
+    }
+
     private void inicializaGrausSeNecessario(String vertice, HashMap<String, Integer> graus) {
         if (!graus.containsKey(vertice)) {
             graus.put(vertice, 0);
@@ -74,11 +77,15 @@ public abstract class Grafo {
 
     protected abstract void addAdjacencia(String u, String v);
 
+    protected abstract void addLaco(String u);
+
     protected abstract void addVerticeIsolado(String nomeVertice);
 
     protected abstract int getQuantidadeAtualVertices();
 
     protected abstract boolean contemVertice(String nomeVertice);
+
+    public abstract double getConsumoDeBytesEmMemoria();
 
     private void gerarVerticesIsolados(int numeroDeVertices, HashMap<String, Integer> graus) {
         int paraAcrescentar = numeroDeVertices - getQuantidadeAtualVertices();

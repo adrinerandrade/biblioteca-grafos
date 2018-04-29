@@ -29,6 +29,11 @@ public class ListaAdjacencia extends Grafo {
     }
 
     @Override
+    protected void addLaco(String u) {
+        obtemOuCriaVertice(u).add(u);
+    }
+
+    @Override
     protected void addVerticeIsolado(String nomeVertice) {
         vertices.put(nomeVertice, new LinkedList<>());
     }
