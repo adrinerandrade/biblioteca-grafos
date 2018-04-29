@@ -1,0 +1,3 @@
+Número de vértices: 100135
+Número de arestas: 794205
+Sequência de graus: 100135

@@ -1,66 +1,90 @@
 package trabalho;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class BibliotecaGrafos {
 
-    public static void main(String[] args) {
-        BibliotecaGrafos biblioteca = new BibliotecaGrafos();
-        System.out.println(biblioteca.criarGrafoDeArquivo("C:/git/grafos/arquivos_teste/grafo1.txt"));
-    }
+    private final BufferedReader fileReader;
 
-    public List<Vertice> criarGrafoDeArquivo(String path) {
-        HashMap<String, Vertice> vertices = new HashMap<>();
-        try (BufferedReader fileReader = new BufferedReader(new FileReader(path))) {
-            String line;
-            boolean firstLine = true;
-            int numeroDeVertices = 0;
-            while ((line = fileReader.readLine()) != null) {
-                if (firstLine) {
-                    firstLine = false;
-                    numeroDeVertices = Integer.parseInt(line);
-                } else {
-                    String[] adjacencia = line.split(" ");
-                    Vertice v1 = getVertice(adjacencia[0], vertices);
-                    Vertice v2 = getVertice(adjacencia[1], vertices);
-                    v1.addAdjacencia(v2);
-                }
-            }
-            if (numeroDeVertices > vertices.size()) {
-                vertices.putAll(gerarNovosVertice(numeroDeVertices - vertices.size(), vertices));
-            }
+    public BibliotecaGrafos(String path) throws FileNotFoundException {
+        try {
+            this.fileReader = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException(String.format("Arquivo de caminho '%s' não encontrado.", path));
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Erro ao ler arquivo");
+            throw e;
         }
-        return new ArrayList<>(vertices.values());
     }
 
-    private Vertice getVertice(String nome, HashMap<String, Vertice> vertices) {
-        if (vertices.containsKey(nome)) {
-            return vertices.get(nome);
-        }
-        Vertice vertice = new Vertice(nome);
-        vertices.put(nome, vertice);
-        return vertice;
-    }
-
-    private HashMap<String, Vertice> gerarNovosVertice(int quantidade, HashMap<String, Vertice> vertices) {
-        HashMap<String, Vertice> novosVertices = new HashMap<>();
-        int index = vertices.size();
-        while (quantidade > 0) {
-            String novoNome = String.valueOf(++index);
-            if (!vertices.containsKey(novoNome)) {
-                --quantidade;
-                novosVertices.put(novoNome, new Vertice(novoNome));
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Informe o caminho do arquivo que contém o grafo:");
+        String path;
+        BibliotecaGrafos biblioteca = null;
+        do {
+             path = scanner.nextLine();
+            try {
+                biblioteca = new BibliotecaGrafos(path);
+            } catch (FileNotFoundException e) {
+                System.out.println("Arquivo informado não encontrado, informe um novo caminho:");
             }
+        } while (biblioteca == null);
+
+        System.out.println("Qual tipo de representação você deseja?");
+        TipoRepresentacaoGrafo tipoRepresentacao = null;
+        do {
+            for (TipoRepresentacaoGrafo tipo : TipoRepresentacaoGrafo.values()) {
+                System.out.println(String.format("%s) %s", tipo.opcao, tipo.name().replaceAll("_", " ")));
+            }
+            try {
+                tipoRepresentacao = TipoRepresentacaoGrafo.acharPorOpcao(scanner.nextLine());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Opção não encontrada, aqui estão as opções disponíveis:");
+            }
+        } while(tipoRepresentacao == null);
+
+        biblioteca.escreverOutput(biblioteca.criarGrafo(tipoRepresentacao));
+    }
+
+    private Grafo criarGrafo(TipoRepresentacaoGrafo tipo) {
+        try (fileReader) {
+            Grafo grafo = new ListaAdjacencia(fileReader);
+            System.out.println("Grafo processado com sucesso!");
+            return grafo;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Erro ao fechar stream do arquivo.", e);
         }
-        return novosVertices;
+    }
+
+    private void escreverOutput(Grafo grafo) {
+        try (FileWriter fileWriter = new FileWriter("C:/git/grafos/biblioteca-grafos/output/output.txt")) {
+
+            fileWriter.write(String.format("Número de vértices: %s\n", grafo.getNumeroVertices()));
+            fileWriter.write(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
+            fileWriter.write(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao escrever o arquivo", e);
+        }
+    }
+
+    private enum TipoRepresentacaoGrafo {
+
+        LISTA_DE_ADJACENCIA("a"),
+        MATRIZ_DE_ADJACENCIA("b");
+
+        private String opcao;
+
+        TipoRepresentacaoGrafo(String opcao) {
+            this.opcao = opcao;
+        }
+
+        static TipoRepresentacaoGrafo acharPorOpcao(String opcao) {
+            for (TipoRepresentacaoGrafo tipo : values()) {
+                if (tipo.opcao.equals(opcao))
+                    return tipo;
+            }
+            throw new IllegalArgumentException("Opção não encontrada;");
+        }
+
     }
 
 }
