@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 import java.util.TreeSet;
 
 public abstract class Grafo {
@@ -61,10 +62,10 @@ public abstract class Grafo {
         return numeroDeVertices;
     }
     
-    public HashMap<Integer, Vertice> buscaProfundidade(Integer vertice) {
+    public TreeSet<Vertice> buscaProfundidade(Integer vertice) {
 		int tempo = 0;
     	HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
-    	for(Integer key: getVertives()) {
+    	for(Integer key: getVertices()) {
     		verticesMarcadores.put(key, new Vertice(key));
     	}
     	verticesMarcadores.get(vertice).setDistancia(tempo);
@@ -72,16 +73,31 @@ public abstract class Grafo {
     	for(Integer verticeAtual: vertivesAdjascentes) {
     		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
     			verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
-    			tempo = buscaDSFListaAdjacencia(verticeAtual, verticesMarcadores, tempo);
+    			tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
     		}
     	}
-		return verticesMarcadores;
-    }
+    	TreeSet<Vertice> verticesOrdenados = new TreeSet<Vertice>();
+    	verticesOrdenados.addAll(verticesMarcadores.values());
+    	return verticesOrdenados;
+    }    
     
+    public int getDiametro() {
+    	int maiorDistancia = 0;
+    	Vertice verticeAtual = null;
+    	for(int vertice: getVertices()) {
+    		TreeSet<Vertice> lista = buscaLargura(vertice);
+    		do {
+    			verticeAtual = lista.pollLast();
+    			
+    		} while (verticeAtual.getDistancia() != Integer.MAX_VALUE && !lista.isEmpty());
+    		maiorDistancia = verticeAtual.getDistancia() > maiorDistancia ? verticeAtual.getDistancia() : maiorDistancia;
+    	}
+    	return maiorDistancia;
+    }
 
-    public HashMap<Integer, Vertice> buscaLargura(Integer vertice) {
+    public TreeSet<Vertice> buscaLargura(Integer vertice) {
     	HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
-    	for(Integer key: getVertives()) {
+    	for(Integer key: getVertices()) {
     		verticesMarcadores.put(key, new Vertice(key));
     	}
     	verticesMarcadores.get(vertice).setDistancia(0);
@@ -100,13 +116,14 @@ public abstract class Grafo {
     			}
     		}
     		verticesMarcadores.get(verticePrimeiroFila).setCor("preto");
-    	}
-    	
-    	
-    	return verticesMarcadores;
+    	}   	
+
+    	TreeSet<Vertice> verticesOrdenados = new TreeSet<Vertice>();
+    	verticesOrdenados.addAll(verticesMarcadores.values());
+    	return verticesOrdenados;
     }
 
-	private int buscaDSFListaAdjacencia(Integer vertice, HashMap<Integer, Vertice> verticesMarcadores, int tempo) {
+	private int buscaDSF(Integer vertice, HashMap<Integer, Vertice> verticesMarcadores, int tempo) {
     	verticesMarcadores.get(vertice).setCor("cinza");
     	tempo += 1;
     	verticesMarcadores.get(vertice).setDistancia(tempo);
@@ -114,9 +131,10 @@ public abstract class Grafo {
     	for(Integer verticeAtual: vertivesAdjascentes) {
     		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
     			verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
-    			buscaDSFListaAdjacencia(verticeAtual, verticesMarcadores, tempo);
+    			buscaDSF(verticeAtual, verticesMarcadores, tempo);
     		}
     	}
+    	
     	verticesMarcadores.get(vertice).setCor("preto");
     	return tempo;
     }
@@ -151,7 +169,7 @@ public abstract class Grafo {
 
     public abstract double getConsumoDeBytesEmMemoria();
     
-    protected abstract int[] getVertives();
+    protected abstract int[] getVertices();
     
     protected abstract int[] getVerticesAdjacentes(Integer vertice);
 

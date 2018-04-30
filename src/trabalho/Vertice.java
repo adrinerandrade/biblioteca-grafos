@@ -1,7 +1,7 @@
 package trabalho;
 
 
-public class Vertice {
+public class Vertice implements Comparable<Vertice>{
 	private String cor;
 	private int distancia;
 	private int nome;
@@ -35,6 +35,16 @@ public class Vertice {
 	}
 	public void setVerticePai(int verticePai) {
 		this.verticePai = verticePai;
+	}
+
+	@Override
+	public int compareTo(Vertice v) {
+		if(this.distancia < v.distancia) {
+			return -1;
+		} else if(this.distancia > v.distancia) {
+			return 1;
+		}
+		return 0;
 	}	
 	
 }
