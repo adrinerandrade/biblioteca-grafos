@@ -12,6 +12,7 @@ public class Vertice implements Comparable<Vertice>{
 		this.distancia = Integer.MAX_VALUE;
 		this.nome = nome;
 	}
+
 	public String getCor() {
 		return cor;
 	}

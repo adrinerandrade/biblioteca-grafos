@@ -2,11 +2,7 @@ package trabalho;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public abstract class Grafo {
 
@@ -62,81 +58,18 @@ public abstract class Grafo {
         return numeroDeVertices;
     }
     
-    public TreeSet<Vertice> buscaProfundidade(Integer vertice) {
-		int tempo = 0;
-    	HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
-    	for(Integer key: getVertices()) {
-    		verticesMarcadores.put(key, new Vertice(key));
-    	}
-    	verticesMarcadores.get(vertice).setDistancia(tempo);
-    	int[] vertivesAdjascentes = getVerticesAdjacentes(vertice);
-    	for(Integer verticeAtual: vertivesAdjascentes) {
-    		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
-    			verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
-    			tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
-    		}
-    	}
-    	TreeSet<Vertice> verticesOrdenados = new TreeSet<Vertice>();
-    	verticesOrdenados.addAll(verticesMarcadores.values());
-    	return verticesOrdenados;
-    }    
-    
     public int getDiametro() {
     	int maiorDistancia = 0;
     	Vertice verticeAtual = null;
     	for(int vertice: getVertices()) {
-    		TreeSet<Vertice> lista = buscaLargura(vertice);
+    		TreeSet<Vertice> lista = new Busca(this).buscaEmLagura(vertice);
     		do {
     			verticeAtual = lista.pollLast();
-    			
+
     		} while (verticeAtual.getDistancia() != Integer.MAX_VALUE && !lista.isEmpty());
     		maiorDistancia = verticeAtual.getDistancia() > maiorDistancia ? verticeAtual.getDistancia() : maiorDistancia;
     	}
     	return maiorDistancia;
-    }
-
-    public TreeSet<Vertice> buscaLargura(Integer vertice) {
-    	HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
-    	for(Integer key: getVertices()) {
-    		verticesMarcadores.put(key, new Vertice(key));
-    	}
-    	verticesMarcadores.get(vertice).setDistancia(0);
-    	verticesMarcadores.get(vertice).setCor("cinza");
-    	Queue<Integer> fila = new LinkedList();
-    	fila.add(vertice);
-    	while(!fila.isEmpty()) {
-    		int verticePrimeiroFila = fila.poll();
-    		int[] vertivesAdjascentes = getVerticesAdjacentes(verticePrimeiroFila);
-    		for(int verticeAtual: vertivesAdjascentes) {
-    			if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
-    				fila.add(verticeAtual);
-    				verticesMarcadores.get(verticeAtual).setCor("cinza");
-    				verticesMarcadores.get(verticeAtual).setVerticePai(verticePrimeiroFila);
-    				verticesMarcadores.get(verticeAtual).setDistancia(verticesMarcadores.get(verticePrimeiroFila).getDistancia() + 1);
-    			}
-    		}
-    		verticesMarcadores.get(verticePrimeiroFila).setCor("preto");
-    	}   	
-
-    	TreeSet<Vertice> verticesOrdenados = new TreeSet<Vertice>();
-    	verticesOrdenados.addAll(verticesMarcadores.values());
-    	return verticesOrdenados;
-    }
-
-	private int buscaDSF(Integer vertice, HashMap<Integer, Vertice> verticesMarcadores, int tempo) {
-    	verticesMarcadores.get(vertice).setCor("cinza");
-    	tempo += 1;
-    	verticesMarcadores.get(vertice).setDistancia(tempo);
-    	int[] vertivesAdjascentes = getVerticesAdjacentes(vertice);
-    	for(Integer verticeAtual: vertivesAdjascentes) {
-    		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
-    			verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
-    			buscaDSF(verticeAtual, verticesMarcadores, tempo);
-    		}
-    	}
-    	
-    	verticesMarcadores.get(vertice).setCor("preto");
-    	return tempo;
     }
 
     private void somaGrau(Integer nomeVertice, HashMap<Integer, Integer> graus) {
@@ -152,8 +85,6 @@ public abstract class Grafo {
             graus.put(vertice, 0);
         }
     }
-
-//    protected abstract Vertice[] getVerticesAdjacentes(int vertice);
     
     protected abstract void criarEstrutura(int quantidadeVertices);
 
@@ -167,11 +98,11 @@ public abstract class Grafo {
 
     protected abstract boolean contemVertice(Integer nomeVertice);
 
-    public abstract double getConsumoDeBytesEmMemoria();
+    public abstract long getConsumoMemoria();
     
-    protected abstract int[] getVertices();
+    protected abstract Collection<Integer> getVertices();
     
-    protected abstract int[] getVerticesAdjacentes(Integer vertice);
+    protected abstract Collection<Integer> getVerticesAdjacentes(Integer vertice);
 
     private void gerarVerticesIsolados(int numeroDeVertices, HashMap<Integer, Integer> graus) {
         int paraAcrescentar = numeroDeVertices - getQuantidadeAtualVertices();

@@ -2,6 +2,7 @@ package trabalho;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -10,8 +11,18 @@ public class ListaAdjacencia extends Grafo {
     private HashMap<Integer, LinkedList<Integer>> vertices;
 
     @Override
-    public double getConsumoDeBytesEmMemoria() {
-        return 0;
+    public long getConsumoMemoria() {
+        return ObtensorTamanhoEmMemoria.tamanhoObjetoEmMemoria(vertices);
+    }
+
+    @Override
+    protected Collection<Integer> getVertices() {
+        return vertices.keySet();
+    }
+
+    @Override
+    protected Collection<Integer> getVerticesAdjacentes(Integer vertice) {
+        return vertices.get(vertice);
     }
 
     public ListaAdjacencia(BufferedReader fileReader) throws IOException {

@@ -47,7 +47,12 @@ public class BibliotecaGrafos {
 
     private Grafo criarGrafo(TipoRepresentacaoGrafo tipo) {
         try (fileReader) {
-            Grafo grafo = new ListaAdjacencia(fileReader);
+            Grafo grafo;
+            if (TipoRepresentacaoGrafo.LISTA_DE_ADJACENCIA.equals(tipo)) {
+                grafo = new ListaAdjacencia(fileReader);
+            } else {
+                grafo = new MatrizAdjacencia(fileReader);
+            }
             System.out.println("Grafo processado com sucesso!");
             return grafo;
         } catch (IOException e) {
