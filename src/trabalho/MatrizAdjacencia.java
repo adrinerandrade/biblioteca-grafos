@@ -2,9 +2,11 @@ package trabalho;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class MatrizAdjacencia extends Grafo {
@@ -22,14 +24,15 @@ public class MatrizAdjacencia extends Grafo {
 
     @Override
     protected Collection<Integer> getVertices() {
-        return Stream.of(1, matriz.length).collect(Collectors.toList());
+        return IntStream.rangeClosed(1, matriz.length).boxed().collect(Collectors.toList());
     }
 
     @Override
     protected Collection<Integer> getVerticesAdjacentes(Integer vertice) {
         LinkedList<Integer> adjacentes = new LinkedList<>();
-        for (int i = 0; i < matriz[vertice].length; i++) {
-            if (matriz[vertice][i] > 0) {
+        int verticeIndex = vertice - 1;
+        for (int i = 1; i <= matriz[verticeIndex].length; i++) {
+            if (matriz[verticeIndex][i - 1] > 0) {
                 adjacentes.add(i);
             }
         }

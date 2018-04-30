@@ -42,7 +42,12 @@ public class BibliotecaGrafos {
             }
         } while(tipoRepresentacao == null);
 
-        biblioteca.escreverOutput(biblioteca.criarGrafo(tipoRepresentacao));
+        Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
+        biblioteca.escreverOutput(grafo);
+
+        Busca busca = new Busca(grafo);
+        System.out.println("Largura: " + busca.buscaEmLagura(1));
+        System.out.println("Profundidade: " + busca.buscaEmProfundidade(1));
     }
 
     private Grafo criarGrafo(TipoRepresentacaoGrafo tipo) {

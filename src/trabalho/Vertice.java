@@ -46,6 +46,15 @@ public class Vertice implements Comparable<Vertice>{
 			return 1;
 		}
 		return 0;
-	}	
-	
+	}
+
+	@Override
+	public String toString() {
+		return "Vertice{" +
+				"cor='" + cor + '\'' +
+				", distancia=" + distancia +
+				", nome=" + nome +
+				", verticePai=" + verticePai +
+				'}';
+	}
 }
