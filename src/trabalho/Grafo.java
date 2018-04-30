@@ -3,6 +3,7 @@ package trabalho;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.TreeSet;
 
 public abstract class Grafo {
@@ -59,16 +60,36 @@ public abstract class Grafo {
         return numeroDeVertices;
     }
     
-    public void buscaProfundidade(Vertice vertice) {
-    	for(Vertice verticeAtual: vertice.getVerticesAdjacentes()) {
-    		int nivel = vertice.getNivel();
-    		if(verticeAtual.getCor() == "branco") {
-    			verticeAtual.setCor("cinza");
-    			verticeAtual.setNivel(++nivel);
-    			buscaProfundidade(verticeAtual);
+    public HashMap<Integer, Vertice> buscaListaAdjacencia(Integer vertice) {
+		int tempo = 0;
+    	HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
+    	for(Integer key: getVertives()) {
+    		verticesMarcadores.put(key, new Vertice(key));
+    	}
+    	
+    	int[] vertivesAdjascentes = getVerticesAdjacentes(vertice);
+    	for(Integer verticeAtual: vertivesAdjascentes) {
+    		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
+    			verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
+    			tempo = buscaDSFListaAdjacencia(verticeAtual, verticesMarcadores, tempo);
     		}
     	}
-    	vertice.setCor("preto");
+		return verticesMarcadores;
+    }
+
+	private int buscaDSFListaAdjacencia(Integer vertice, HashMap<Integer, Vertice> verticesMarcadores, int tempo) {
+    	verticesMarcadores.get(vertice).setCor("cinza");
+    	tempo += 1;
+    	verticesMarcadores.get(vertice).setNivel(tempo);
+    	int[] vertivesAdjascentes = getVerticesAdjacentes(vertice);
+    	for(Integer verticeAtual: vertivesAdjascentes) {
+    		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
+    			verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
+    			buscaDSFListaAdjacencia(verticeAtual, verticesMarcadores, tempo);
+    		}
+    	}
+    	verticesMarcadores.get(vertice).setCor("preto");
+    	return tempo;
     }
 
     private void somaGrau(Integer nomeVertice, HashMap<Integer, Integer> graus) {
@@ -85,7 +106,7 @@ public abstract class Grafo {
         }
     }
 
-    protected abstract Vertice[] getVerticesAdjacentes(int vertice);
+//    protected abstract Vertice[] getVerticesAdjacentes(int vertice);
     
     protected abstract void criarEstrutura(int quantidadeVertices);
 
@@ -100,6 +121,10 @@ public abstract class Grafo {
     protected abstract boolean contemVertice(Integer nomeVertice);
 
     public abstract double getConsumoDeBytesEmMemoria();
+    
+    protected abstract int[] getVertives();
+    
+    protected abstract int[] getVerticesAdjacentes(Integer vertice);
 
     private void gerarVerticesIsolados(int numeroDeVertices, HashMap<Integer, Integer> graus) {
         int paraAcrescentar = numeroDeVertices - getQuantidadeAtualVertices();
