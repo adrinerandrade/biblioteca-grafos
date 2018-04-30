@@ -3,13 +3,13 @@ package trabalho;
 
 public class Vertice {
 	private String cor;
-	private int nivel;
+	private int distancia;
 	private int nome;
 	private int verticePai;
 	
 	public Vertice(int nome) {
 		this.cor = "branco";
-		this.nivel = 0;
+		this.distancia = Integer.MAX_VALUE;
 		this.nome = nome;
 	}
 	public String getCor() {
@@ -18,11 +18,11 @@ public class Vertice {
 	public void setCor(String cor) {
 		this.cor = cor;
 	}
-	public int getNivel() {
-		return nivel;
+	public int getDistancia() {
+		return distancia;
 	}
-	public void setNivel(int nivel) {
-		this.nivel = nivel;
+	public void setDistancia(int nivel) {
+		this.distancia = nivel;
 	}
 	public int getNome() {
 		return nome;

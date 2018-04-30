@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.TreeSet;
 
 public abstract class Grafo {
@@ -60,13 +61,13 @@ public abstract class Grafo {
         return numeroDeVertices;
     }
     
-    public HashMap<Integer, Vertice> buscaListaAdjacencia(Integer vertice) {
+    public HashMap<Integer, Vertice> buscaProfundidade(Integer vertice) {
 		int tempo = 0;
     	HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
     	for(Integer key: getVertives()) {
     		verticesMarcadores.put(key, new Vertice(key));
     	}
-    	
+    	verticesMarcadores.get(vertice).setDistancia(tempo);
     	int[] vertivesAdjascentes = getVerticesAdjacentes(vertice);
     	for(Integer verticeAtual: vertivesAdjascentes) {
     		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
@@ -76,11 +77,39 @@ public abstract class Grafo {
     	}
 		return verticesMarcadores;
     }
+    
+
+    public HashMap<Integer, Vertice> buscaLargura(Integer vertice) {
+    	HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
+    	for(Integer key: getVertives()) {
+    		verticesMarcadores.put(key, new Vertice(key));
+    	}
+    	verticesMarcadores.get(vertice).setDistancia(0);
+    	verticesMarcadores.get(vertice).setCor("cinza");
+    	Queue<Integer> fila = new LinkedList();
+    	fila.add(vertice);
+    	while(!fila.isEmpty()) {
+    		int verticePrimeiroFila = fila.poll();
+    		int[] vertivesAdjascentes = getVerticesAdjacentes(verticePrimeiroFila);
+    		for(int verticeAtual: vertivesAdjascentes) {
+    			if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
+    				fila.add(verticeAtual);
+    				verticesMarcadores.get(verticeAtual).setCor("cinza");
+    				verticesMarcadores.get(verticeAtual).setVerticePai(verticePrimeiroFila);
+    				verticesMarcadores.get(verticeAtual).setDistancia(verticesMarcadores.get(verticePrimeiroFila).getDistancia() + 1);
+    			}
+    		}
+    		verticesMarcadores.get(verticePrimeiroFila).setCor("preto");
+    	}
+    	
+    	
+    	return verticesMarcadores;
+    }
 
 	private int buscaDSFListaAdjacencia(Integer vertice, HashMap<Integer, Vertice> verticesMarcadores, int tempo) {
     	verticesMarcadores.get(vertice).setCor("cinza");
     	tempo += 1;
-    	verticesMarcadores.get(vertice).setNivel(tempo);
+    	verticesMarcadores.get(vertice).setDistancia(tempo);
     	int[] vertivesAdjascentes = getVerticesAdjacentes(vertice);
     	for(Integer verticeAtual: vertivesAdjascentes) {
     		if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
