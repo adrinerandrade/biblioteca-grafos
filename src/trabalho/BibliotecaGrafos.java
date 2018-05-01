@@ -105,7 +105,8 @@ public class BibliotecaGrafos {
         try (FileWriter fileWriter = new FileWriter("./output/output.txt")) {
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("Número de vértices: %s\n", grafo.getNumeroDeVertices()));
-
+            sb.append(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
+            sb.append(String.format("Consumo em memória: %s bytes\n", grafo.getConsumoMemoria()));
             sb.append(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
 
             sb.append("Arvore de busca: \n");
@@ -123,7 +124,7 @@ public class BibliotecaGrafos {
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("Número de vértices: %s\n", grafo.getNumeroDeVertices()));
             sb.append(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
-//            sb.append(String.format("Consumo em memória: %s bytes\n", grafo.getConsumoMemoria()));
+            sb.append(String.format("Consumo em memória: %s bytes\n", grafo.getConsumoMemoria()));
             sb.append(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
             sb.append(String.format("Diamentro do grafo: %s\n", diametro == Integer.MAX_VALUE ? "Infinito" : diametro));
             fileWriter.write(sb.toString());

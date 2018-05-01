@@ -12,7 +12,7 @@ public class ListaAdjacencia extends Grafo {
 
     @Override
     public long getConsumoMemoria() {
-        return ObtensorTamanhoEmMemoria.tamanhoObjetoEmMemoria(vertices);
+        return ObjectBytesCounting.countBytesOf(vertices);
     }
 
     @Override

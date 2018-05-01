@@ -18,7 +18,7 @@ public class MatrizAdjacencia extends Grafo {
 
     @Override
     public long getConsumoMemoria() {
-        return ObtensorTamanhoEmMemoria.tamanhoObjetoEmMemoria(matriz);
+        return ObjectBytesCounting.countBytesOf(matriz);
     }
 
     @Override

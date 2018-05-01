@@ -1,7 +1,5 @@
 package trabalho;
 
-import jdk.nashorn.api.tree.Tree;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
