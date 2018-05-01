@@ -8,11 +8,7 @@ public class BibliotecaGrafos {
     private final BufferedReader fileReader;
 
     public BibliotecaGrafos(String path) throws FileNotFoundException {
-        try {
-            this.fileReader = new BufferedReader(new FileReader(path));
-        } catch (FileNotFoundException e) {
-            throw e;
-        }
+        this.fileReader = new BufferedReader(new FileReader(path));
     }
 
     public static void main(String[] args) {
@@ -21,7 +17,7 @@ public class BibliotecaGrafos {
         String path;
         BibliotecaGrafos biblioteca = null;
         do {
-             path = scanner.nextLine();
+            path = scanner.nextLine();
             try {
                 biblioteca = new BibliotecaGrafos(path);
             } catch (FileNotFoundException e) {
@@ -40,53 +36,53 @@ public class BibliotecaGrafos {
             } catch (IllegalArgumentException e) {
                 System.out.println("Opção não encontrada, aqui estão as opções disponíveis:");
             }
-        } while(tipoRepresentacao == null);
-        
-        TipoDeBusca tipoBusca= null;
+        } while (tipoRepresentacao == null);
+
+        TipoDeBusca tipoBusca = null;
         do {
             for (TipoDeBusca tipo : TipoDeBusca.values()) {
                 System.out.println(String.format("%s) %s", tipo.opcao, tipo.name().replaceAll("_", " ")));
             }
             try {
-            	tipoBusca = TipoDeBusca.acharPorOpcao(scanner.nextLine());
+                tipoBusca = TipoDeBusca.acharPorOpcao(scanner.nextLine());
             } catch (IllegalArgumentException e) {
                 System.out.println("Opção não encontrada, aqui estão as opções disponíveis:");
             }
-        } while(tipoBusca == null);
-        
-        if(tipoBusca.equals(TipoDeBusca.BUSCA_EM_LARGURA)) {
-        	int verticeInicial = 0;
-        	do {
-        		System.out.println("Informe o vertice inicial");            
-        		try {
-        			verticeInicial = Integer.parseInt(scanner.nextLine());
-        		} catch (IllegalArgumentException e) {
-        			System.out.println("Valor invalido. Apenas valore inteiros são permitidos");
-        		}
-        	} while(verticeInicial == 0);
-        	Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
-        	Busca busca = new Busca(grafo);
-        	Collection buscaLargura = busca.buscaEmLagura(verticeInicial);
-        	biblioteca.escreverOutput(grafo, buscaLargura);
-        } else if(tipoBusca.equals(TipoDeBusca.BUSCA_EM_PROFUNDIDADE)) {
-        	int verticeInicial = 0;
-        	do {
-        		System.out.println("Informe o vertice inicial");            
-        		try {
-        			verticeInicial = Integer.parseInt(scanner.nextLine());
-        		} catch (IllegalArgumentException e) {
-        			System.out.println("Valor invalido. Apenas valore inteiros são permitidos");
-        		}
-        	} while(verticeInicial == 0);
-        	Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
-        	Busca busca = new Busca(grafo);
-        	Collection buscaLargura = busca.buscaEmProfundidade(verticeInicial);
-        	biblioteca.escreverOutput(grafo, buscaLargura);
+        } while (tipoBusca == null);
+
+        if (tipoBusca.equals(TipoDeBusca.BUSCA_EM_LARGURA)) {
+            int verticeInicial = 0;
+            do {
+                System.out.println("Informe o vertice inicial");
+                try {
+                    verticeInicial = Integer.parseInt(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Valor invalido. Apenas valore inteiros são permitidos");
+                }
+            } while (verticeInicial == 0);
+            Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
+            Busca busca = new Busca(grafo);
+            Collection buscaLargura = busca.buscaEmLagura(verticeInicial);
+            biblioteca.escreverOutput(grafo, buscaLargura);
+        } else if (tipoBusca.equals(TipoDeBusca.BUSCA_EM_PROFUNDIDADE)) {
+            int verticeInicial = 0;
+            do {
+                System.out.println("Informe o vertice inicial");
+                try {
+                    verticeInicial = Integer.parseInt(scanner.nextLine());
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Valor invalido. Apenas valores inteiros são permitidos");
+                }
+            } while (verticeInicial == 0);
+            Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
+            Busca busca = new Busca(grafo);
+            Collection buscaLargura = busca.buscaEmProfundidade(verticeInicial);
+            biblioteca.escreverOutput(grafo, buscaLargura);
         } else if (tipoBusca.equals(TipoDeBusca.DIAMETRO_DO_GRAFO)) {
-        	Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
-        	int diametro = grafo.getDiametro();
-        	biblioteca.escreverOutput(grafo, diametro);
-        }        
+            Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
+            int diametro = grafo.getDiametro();
+            biblioteca.escreverOutput(grafo, diametro);
+        }
     }
 
     private Grafo criarGrafo(TipoRepresentacaoGrafo tipo) {
@@ -107,27 +103,30 @@ public class BibliotecaGrafos {
 
     private void escreverOutput(Grafo grafo, Collection busca) {
         try (FileWriter fileWriter = new FileWriter("./output/output.txt")) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.format("Número de vértices: %s\n", grafo.getNumeroDeVertices()));
 
-            fileWriter.write(String.format("Número de vértices: %s\n", grafo.getNumeroDeVertices()));
-            fileWriter.write(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
-            fileWriter.write(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
-            
-            fileWriter.write("Arvore de busca: \n");
+            sb.append(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
+
+            sb.append("Arvore de busca: \n");
             for (Object vertice : busca) {
-                fileWriter.write(vertice.toString() + "\n");
+                sb.append(vertice.toString() + "\n");
             }
+            fileWriter.write(sb.toString());
         } catch (IOException e) {
             throw new RuntimeException("Erro ao escrever o arquivo", e);
         }
     }
-    
+
     private void escreverOutput(Grafo grafo, int diametro) {
         try (FileWriter fileWriter = new FileWriter("./output/output.txt")) {
-
-            fileWriter.write(String.format("Número de vértices: %s\n", grafo.getNumeroDeVertices()));
-            fileWriter.write(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
-            fileWriter.write(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
-            fileWriter.write(String.format("Diamentro do grafo: %s\n", diametro));
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.format("Número de vértices: %s\n", grafo.getNumeroDeVertices()));
+            sb.append(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
+//            sb.append(String.format("Consumo em memória: %s bytes\n", grafo.getConsumoMemoria()));
+            sb.append(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
+            sb.append(String.format("Diamentro do grafo: %s\n", diametro == Integer.MAX_VALUE ? "Infinito" : diametro));
+            fileWriter.write(sb.toString());
         } catch (IOException e) {
             throw new RuntimeException("Erro ao escrever o arquivo", e);
         }
@@ -153,7 +152,7 @@ public class BibliotecaGrafos {
         }
 
     }
-    
+
     private enum TipoDeBusca {
 
         BUSCA_EM_PROFUNDIDADE("a"),

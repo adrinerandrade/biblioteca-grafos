@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class MatrizAdjacencia extends Grafo {
 
-    private int[][] matriz;
+    private short[][] matriz;
 
     public MatrizAdjacencia(BufferedReader fileReader) throws IOException {
         super(fileReader);
@@ -40,7 +40,7 @@ public class MatrizAdjacencia extends Grafo {
 
     @Override
     protected void criarEstrutura(int quantidadeVertices) {
-        matriz = new int[quantidadeVertices][quantidadeVertices];
+        matriz = new short[quantidadeVertices][quantidadeVertices];
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MatrizAdjacencia extends Grafo {
     @Override
     protected void addVerticeIsolado(Integer vertice) {
         if (vertice > matriz.length && vertice <= matriz.length) {
-            matriz[vertice - 1] = new int[matriz.length];
+            matriz[vertice - 1] = new short[matriz.length];
         }
     }
 

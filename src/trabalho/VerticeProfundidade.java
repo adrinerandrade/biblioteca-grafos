@@ -51,12 +51,14 @@ public class VerticeProfundidade {
 
 	@Override
 	public String toString() {
-		return "{" +
-				"nome=" + nome +
-				", cor='" + cor + '\'' +
-				", tempo=" + tempo +
-				", tempoRetorno=" + tempoRetorno +
-				", verticePai=" + verticePai +
-				'}';
+		StringBuilder sb = new StringBuilder();
+		return sb.append("{")
+				.append("nome=").append(nome)
+				.append(", cor='").append(cor).append('\'')
+				.append(", tempo=").append(tempo)
+				.append(", tempoRetorno=").append(tempoRetorno)
+				.append(", verticePai=").append(verticePai)
+				.append('}')
+				.toString();
 	}
 }

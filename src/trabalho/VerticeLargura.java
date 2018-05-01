@@ -41,11 +41,13 @@ public class VerticeLargura {
 
 	@Override
 	public String toString() {
-		return "{" +
-				"nome='" + nome + '\'' +
-				", distancia=" + nivel +
-				", cor=" + cor +
-				", verticePai=" + verticePai +
-				'}';
+		StringBuilder sb = new StringBuilder();
+		return sb.append("{")
+				.append("nome=").append(nome)
+				.append(", cor='").append(cor).append('\'')
+				.append(", distancia=").append(nivel == Integer.MAX_VALUE ? "Infinito" : nivel)
+				.append(", verticePai=").append(verticePai)
+				.append('}')
+				.toString();
 	}
 }
