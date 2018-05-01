@@ -37,13 +37,14 @@ public class Busca {
         }
         return verticesMarcadores.values();
     }
-
+//    ./arquivos_teste/grafo1.txt
     public Collection<Vertice> buscaEmProfundidade(Integer vertice) {
         int tempo = 0;
         HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
         for (Integer key : grafo.getVertices()) {
             verticesMarcadores.put(key, new Vertice(key));
         }
+        verticesMarcadores.get(vertice).setCor("cinza");
         verticesMarcadores.get(vertice).setDistancia(tempo);
         Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(vertice);
         for (Integer verticeAtual : vertivesAdjascentes) {
@@ -63,7 +64,7 @@ public class Busca {
         for (Integer verticeAtual : vertivesAdjascentes) {
             if (verticesMarcadores.get(verticeAtual).getCor() == "branco") {
                 verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
-                buscaDSF(verticeAtual, verticesMarcadores, tempo);
+                tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
             }
         }
 
