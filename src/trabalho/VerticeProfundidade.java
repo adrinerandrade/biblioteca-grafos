@@ -42,10 +42,10 @@ public class VerticeProfundidade {
 	public void setNome(int nome) {
 		this.nome = nome;
 	}
-	public int getVerticePai() {
+	public Integer getVerticePai() {
 		return verticePai;
 	}
-	public void setVerticePai(int verticePai) {
+	public void setVerticePai(Integer verticePai) {
 		this.verticePai = verticePai;
 	}
 
