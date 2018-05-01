@@ -1,6 +1,9 @@
 package trabalho;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Busca {
 
@@ -10,20 +13,20 @@ public class Busca {
         this.grafo = grafo;
     }
 
-    public TreeSet<Vertice> buscaEmLagura(Integer vertice) {
+    public Collection<Vertice> buscaEmLagura(Integer vertice) {
         HashMap<Integer, Vertice> verticesMarcadores = new HashMap<>();
-        for(Integer key: grafo.getVertices()) {
+        for (Integer key : grafo.getVertices()) {
             verticesMarcadores.put(key, new Vertice(key));
         }
         verticesMarcadores.get(vertice).setDistancia(0);
         verticesMarcadores.get(vertice).setCor("cinza");
         Queue<Integer> fila = new LinkedList<>();
         fila.add(vertice);
-        while(!fila.isEmpty()) {
+        while (!fila.isEmpty()) {
             int verticePrimeiroFila = fila.poll();
             Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(verticePrimeiroFila);
-            for(int verticeAtual: vertivesAdjascentes) {
-                if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
+            for (int verticeAtual : vertivesAdjascentes) {
+                if (verticesMarcadores.get(verticeAtual).getCor() == "branco") {
                     fila.add(verticeAtual);
                     verticesMarcadores.get(verticeAtual).setCor("cinza");
                     verticesMarcadores.get(verticeAtual).setVerticePai(verticePrimeiroFila);
@@ -32,29 +35,24 @@ public class Busca {
             }
             verticesMarcadores.get(verticePrimeiroFila).setCor("preto");
         }
-
-        TreeSet<Vertice> verticesOrdenados = new TreeSet<Vertice>();
-        verticesOrdenados.addAll(verticesMarcadores.values());
-        return verticesOrdenados;
+        return verticesMarcadores.values();
     }
 
-    public TreeSet<Vertice> buscaEmProfundidade(Integer vertice) {
+    public Collection<Vertice> buscaEmProfundidade(Integer vertice) {
         int tempo = 0;
         HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
-        for(Integer key: grafo.getVertices()) {
+        for (Integer key : grafo.getVertices()) {
             verticesMarcadores.put(key, new Vertice(key));
         }
         verticesMarcadores.get(vertice).setDistancia(tempo);
         Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(vertice);
-        for(Integer verticeAtual: vertivesAdjascentes) {
-            if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
+        for (Integer verticeAtual : vertivesAdjascentes) {
+            if (verticesMarcadores.get(verticeAtual).getCor() == "branco") {
                 verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
                 tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
             }
         }
-        TreeSet<Vertice> verticesOrdenados = new TreeSet<Vertice>();
-        verticesOrdenados.addAll(verticesMarcadores.values());
-        return verticesOrdenados;
+        return verticesMarcadores.values();
     }
 
     private int buscaDSF(Integer vertice, HashMap<Integer, Vertice> verticesMarcadores, int tempo) {
@@ -62,8 +60,8 @@ public class Busca {
         tempo += 1;
         verticesMarcadores.get(vertice).setDistancia(tempo);
         Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(vertice);
-        for(Integer verticeAtual: vertivesAdjascentes) {
-            if(verticesMarcadores.get(verticeAtual).getCor() == "branco") {
+        for (Integer verticeAtual : vertivesAdjascentes) {
+            if (verticesMarcadores.get(verticeAtual).getCor() == "branco") {
                 verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
                 buscaDSF(verticeAtual, verticesMarcadores, tempo);
             }

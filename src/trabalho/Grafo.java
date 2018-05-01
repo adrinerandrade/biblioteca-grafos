@@ -1,5 +1,7 @@
 package trabalho;
 
+import jdk.nashorn.api.tree.Tree;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
@@ -57,14 +59,18 @@ public abstract class Grafo {
     public int getNumeroDeVertices() {
         return numeroDeVertices;
     }
-    
+
     public int getDiametro() {
     	int maiorDistancia = 0;
-    	Vertice verticeAtual = null;
+    	Vertice verticeAtual;
     	for(int vertice: getVertices()) {
-    		TreeSet<Vertice> lista = new Busca(this).buscaEmLagura(vertice);
+    		Collection<Vertice> lista = new Busca(this).buscaEmLagura(vertice);
+            TreeSet<Vertice> ordenarMaiorDistancia = new TreeSet<>((v1, v2) -> v1.getDistancia() < v2.getDistancia() ? 1 : -1);
+            for (Vertice obj : lista) {
+                   ordenarMaiorDistancia.add(obj);
+            }
     		do {
-    			verticeAtual = lista.pollLast();
+    			verticeAtual = ordenarMaiorDistancia.first();
 
     		} while (verticeAtual.getDistancia() != Integer.MAX_VALUE && !lista.isEmpty());
     		maiorDistancia = verticeAtual.getDistancia() > maiorDistancia ? verticeAtual.getDistancia() : maiorDistancia;

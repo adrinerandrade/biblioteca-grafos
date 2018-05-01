@@ -2,12 +2,11 @@ package trabalho;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class MatrizAdjacencia extends Grafo {
 
@@ -73,5 +72,12 @@ public class MatrizAdjacencia extends Grafo {
     @Override
     protected boolean contemVertice(Integer vertice) {
         return matriz.length > vertice;
+    }
+
+    @Override
+    public String toString() {
+        return "MatrizAdjacencia{" +
+                "matriz=" + Arrays.toString(matriz) +
+                '}';
     }
 }
