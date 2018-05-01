@@ -69,13 +69,10 @@ public abstract class Grafo {
     		Collection<VerticeLargura> lista = new Busca(this).buscaEmLagura(vertice);
             TreeSet<VerticeLargura> ordenarMaiorDistancia = new TreeSet<>((v1, v2) -> v1.getNivel() < v2.getNivel() ? 1 : -1);
             for (VerticeLargura obj : lista) {
-                   ordenarMaiorDistancia.add(obj);
+               ordenarMaiorDistancia.add(obj);
             }
-    		do {
-    			verticeAtual = ordenarMaiorDistancia.first();
-
-    		} while (verticeAtual.getNivel() != Integer.MAX_VALUE && !lista.isEmpty());
-    		if(verticeAtual.getNivel() > maiorDistancia && verticeAtual.getNivel() != Integer.MAX_VALUE) {
+   			verticeAtual = ordenarMaiorDistancia.first();
+    		if(verticeAtual.getNivel() > maiorDistancia) {
     			maiorDistancia = verticeAtual.getNivel();
     		}
     		
