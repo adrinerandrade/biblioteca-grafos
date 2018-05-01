@@ -75,7 +75,10 @@ public abstract class Grafo {
     			verticeAtual = ordenarMaiorDistancia.first();
 
     		} while (verticeAtual.getNivel() != Integer.MAX_VALUE && !lista.isEmpty());
-    		maiorDistancia = verticeAtual.getNivel() > maiorDistancia ? verticeAtual.getNivel() : maiorDistancia;
+    		if(verticeAtual.getNivel() > maiorDistancia && verticeAtual.getNivel() != Integer.MAX_VALUE) {
+    			maiorDistancia = verticeAtual.getNivel();
+    		}
+    		
     	}
     	return maiorDistancia;
     }
