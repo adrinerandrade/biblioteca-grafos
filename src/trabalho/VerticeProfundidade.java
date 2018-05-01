@@ -4,24 +4,24 @@ package trabalho;
 public class VerticeProfundidade {
 
 	private String cor;
-	private int distancia;
-	private int distanciaRetorno;
+	private int tempo;
+	private int tempoRetorno;
 	private int nome;
 	private Integer verticePai;
 	
 	public VerticeProfundidade(int nome) {
 		this.cor = "branco";
-		this.distancia = Integer.MAX_VALUE;
-		this.distanciaRetorno = Integer.MAX_VALUE;
+		this.tempo = Integer.MAX_VALUE;
+		this.tempoRetorno = Integer.MAX_VALUE;
 		this.nome = nome;
 	}
 
-	public int getDistanciaRetorno() {
-		return distanciaRetorno;
+	public int getTempoRetorno() {
+		return tempoRetorno;
 	}
 
-	public void setDistanciaRetorno(int distanciaRetorno) {
-		this.distanciaRetorno = distanciaRetorno;
+	public void setTempoRetorno(int tempoRetorno) {
+		this.tempoRetorno = tempoRetorno;
 	}
 
 	public String getCor() {
@@ -30,11 +30,11 @@ public class VerticeProfundidade {
 	public void setCor(String cor) {
 		this.cor = cor;
 	}
-	public int getDistancia() {
-		return distancia;
+	public int getTempo() {
+		return tempo;
 	}
-	public void setDistancia(int nivel) {
-		this.distancia = nivel;
+	public void setTempo(int nivel) {
+		this.tempo = nivel;
 	}
 	public int getNome() {
 		return nome;
@@ -53,8 +53,8 @@ public class VerticeProfundidade {
 	public String toString() {
 		return "Vertice{" +
 				"cor='" + cor + '\'' +
-				", distancia=" + distancia +
-				", distanciaRetorno=" + distanciaRetorno +
+				", tempo=" + tempo +
+				", tempoRetorno=" + tempoRetorno +
 				", nome=" + nome +
 				", verticePai=" + verticePai +
 				'}';

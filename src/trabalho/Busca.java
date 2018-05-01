@@ -45,7 +45,7 @@ public class Busca {
             verticesMarcadores.put(key, new VerticeProfundidade(key));
         }
         verticesMarcadores.get(vertice).setCor("cinza");
-        verticesMarcadores.get(vertice).setDistancia(tempo);
+        verticesMarcadores.get(vertice).setTempo(tempo);
         Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(vertice);
         for (Integer verticeAtual : vertivesAdjascentes) {
             if (verticesMarcadores.get(verticeAtual).getCor() == "branco") {
@@ -54,7 +54,7 @@ public class Busca {
             }
         }
         tempo += 1;
-        verticesMarcadores.get(vertice).setDistanciaRetorno(tempo);
+        verticesMarcadores.get(vertice).setTempoRetorno(tempo);
         verticesMarcadores.get(vertice).setCor("preto");
         return verticesMarcadores.values();
     }
@@ -62,7 +62,7 @@ public class Busca {
     private int buscaDSF(Integer vertice, HashMap<Integer, VerticeProfundidade> verticesMarcadores, int tempo) {
         verticesMarcadores.get(vertice).setCor("cinza");
         tempo += 1;
-        verticesMarcadores.get(vertice).setDistancia(tempo);
+        verticesMarcadores.get(vertice).setTempo(tempo);
         Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(vertice);
         for (Integer verticeAtual : vertivesAdjascentes) {
             if (verticesMarcadores.get(verticeAtual).getCor() == "branco") {
@@ -71,7 +71,7 @@ public class Busca {
             }
         }
         tempo += 1;
-        verticesMarcadores.get(vertice).setDistanciaRetorno(tempo);
+        verticesMarcadores.get(vertice).setTempoRetorno(tempo);
         verticesMarcadores.get(vertice).setCor("preto");
         return tempo;
     }
