@@ -52,12 +52,12 @@ public class Busca {
         verticesOrdem.remove(vertice);
         verticesOrdem.addFirst(vertice);
         for (Integer v : verticesOrdem) {
+            boolean ehRetorno = false;
             VerticeProfundidade verticePai = null;
             VerticeProfundidade verticeAtual = verticesMarcadores.get(v);
             if (verticeAtual.getCor().equals("branco")) {
                 do {
-                    // Pode ser uma passagem de retorno, por isso a verificação
-                    if (verticeAtual.getCor().equals("branco")) {
+                    if (!ehRetorno) {
                         verticeAtual.setCor("cinza");
                         verticeAtual.setTempo(++tempo);
                         verticeAtual.setVerticePai(verticePai != null ? verticePai.getNome() : null);
@@ -68,10 +68,12 @@ public class Busca {
                     boolean setPreto = true;
                     while (!verticesNaoVisitados.isEmpty()) {
                         VerticeProfundidade proxVertice = verticesMarcadores.get(verticesNaoVisitados.pop());
+                        // Não visitar vértices que já estejam sendo processados
                         if (proxVertice.getCor().equals("branco")) {
                             verticePai = verticeAtual;
                             verticeAtual = proxVertice;
                             setPreto = false;
+                            ehRetorno = false;
                             break;
                         }
                     }
@@ -79,6 +81,7 @@ public class Busca {
                         verticeAtual.setTempoRetorno(++tempo);
                         verticeAtual.setCor("preto");
                         verticeAtual = verticePai;
+                        ehRetorno = true;
                         verticePai = verticePai != null ? verticesMarcadores.get(verticePai.getVerticePai()) : null;
                     }
                 } while (verticeAtual != null);
@@ -87,44 +90,5 @@ public class Busca {
 
         return verticesMarcadores.values();
     }
-
-    //    ./arquivos_teste/grafo1.txt
-//    public Collection<VerticeProfundidade> buscaEmProfundidade(Integer vertice) {
-//        int tempo = 0;
-//        HashMap<Integer, VerticeProfundidade> verticesMarcadores = new HashMap<>();
-//        for (Integer key : grafo.getVertices()) {
-//            verticesMarcadores.put(key, new VerticeProfundidade(key));
-//        }
-//        verticesMarcadores.get(vertice).setCor("cinza");
-//        verticesMarcadores.get(vertice).setTempo(tempo);
-//        Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(vertice);
-//        for (Integer verticeAtual : vertivesAdjascentes) {
-//            if (verticesMarcadores.get(verticeAtual).getCor().equals("branco")) {
-//                verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
-//                tempo += 1;
-//                tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
-//            }
-//        }
-//        verticesMarcadores.get(vertice).setTempoRetorno(tempo);
-//        verticesMarcadores.get(vertice).setCor("preto");
-//        return verticesMarcadores.values();
-//    }
-//
-//    private int buscaDSF(Integer vertice, HashMap<Integer, VerticeProfundidade> verticesMarcadores, int tempo) {
-//        verticesMarcadores.get(vertice).setCor("cinza");
-//        tempo += 1;
-//        verticesMarcadores.get(vertice).setTempo(tempo);
-//        Collection<Integer> vertivesAdjascentes = grafo.getVerticesAdjacentes(vertice);
-//        for (Integer verticeAtual : vertivesAdjascentes) {
-//            if (verticesMarcadores.get(verticeAtual).getCor().equals("branco")) {
-//                verticesMarcadores.get(verticeAtual).setVerticePai(vertice);
-//                tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
-//            }
-//        }
-//        tempo += 1;
-//        verticesMarcadores.get(vertice).setTempoRetorno(tempo);
-//        verticesMarcadores.get(vertice).setCor("preto");
-//        return tempo;
-//    }
 
 }
