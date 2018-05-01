@@ -51,11 +51,11 @@ public class VerticeProfundidade {
 
 	@Override
 	public String toString() {
-		return "Vertice{" +
-				"cor='" + cor + '\'' +
+		return "{" +
+				"nome=" + nome +
+				", cor='" + cor + '\'' +
 				", tempo=" + tempo +
 				", tempoRetorno=" + tempoRetorno +
-				", nome=" + nome +
 				", verticePai=" + verticePai +
 				'}';
 	}

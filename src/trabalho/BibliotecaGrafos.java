@@ -82,14 +82,12 @@ public class BibliotecaGrafos {
         	Busca busca = new Busca(grafo);
         	Collection buscaLargura = busca.buscaEmProfundidade(verticeInicial);
         	biblioteca.escreverOutput(grafo, buscaLargura);
-        } else if(tipoBusca.equals(TipoDeBusca.DIAMETRO_DO_GRAFO)) {
+        } else if (tipoBusca.equals(TipoDeBusca.DIAMETRO_DO_GRAFO)) {
         	Grafo grafo = biblioteca.criarGrafo(tipoRepresentacao);
         	int diametro = grafo.getDiametro();
         	biblioteca.escreverOutput(grafo, diametro);
         }        
     }
-    
-    
 
     private Grafo criarGrafo(TipoRepresentacaoGrafo tipo) {
         try (fileReader) {
@@ -100,6 +98,7 @@ public class BibliotecaGrafos {
                 grafo = new MatrizAdjacencia(fileReader);
             }
             System.out.println("Grafo processado com sucesso!");
+            System.out.println("Dados sobre processamento salvos no arquivo \"./output/output.txt\"!");
             return grafo;
         } catch (IOException e) {
             throw new IllegalArgumentException("Erro ao fechar stream do arquivo.", e);
@@ -113,14 +112,10 @@ public class BibliotecaGrafos {
             fileWriter.write(String.format("Número de arestas: %s\n", grafo.getNumeroArestas()));
             fileWriter.write(String.format("Sequência de graus: %s\n", grafo.getSequenciaGraus()));
             
-            fileWriter.write("Arvore de busca: ");
-            busca.forEach(vertice -> {
-            	try {
-					fileWriter.write(vertice.toString());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}            	
-            });
+            fileWriter.write("Arvore de busca: \n");
+            for (Object vertice : busca) {
+                fileWriter.write(vertice.toString() + "\n");
+            }
         } catch (IOException e) {
             throw new RuntimeException("Erro ao escrever o arquivo", e);
         }
@@ -164,7 +159,6 @@ public class BibliotecaGrafos {
         BUSCA_EM_PROFUNDIDADE("a"),
         BUSCA_EM_LARGURA("b"),
         DIAMETRO_DO_GRAFO("c");
-    	
 
         private String opcao;
 

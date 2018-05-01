@@ -41,10 +41,10 @@ public class VerticeLargura {
 
 	@Override
 	public String toString() {
-		return "Vertice{" +
-				"cor='" + cor + '\'' +
+		return "{" +
+				"nome='" + nome + '\'' +
 				", distancia=" + nivel +
-				", nome=" + nome +
+				", cor=" + cor +
 				", verticePai=" + verticePai +
 				'}';
 	}
