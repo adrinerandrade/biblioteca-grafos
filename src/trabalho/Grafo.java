@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
+//./arquivos_teste/grafo1.txt
+
 public abstract class Grafo {
 
     private TreeSet<Integer> sequenciaGraus;
@@ -62,18 +64,18 @@ public abstract class Grafo {
 
     public int getDiametro() {
     	int maiorDistancia = 0;
-    	Vertice verticeAtual;
+    	VerticeLargura verticeAtual;
     	for(int vertice: getVertices()) {
-    		Collection<Vertice> lista = new Busca(this).buscaEmLagura(vertice);
-            TreeSet<Vertice> ordenarMaiorDistancia = new TreeSet<>((v1, v2) -> v1.getDistancia() < v2.getDistancia() ? 1 : -1);
-            for (Vertice obj : lista) {
+    		Collection<VerticeLargura> lista = new Busca(this).buscaEmLagura(vertice);
+            TreeSet<VerticeLargura> ordenarMaiorDistancia = new TreeSet<>((v1, v2) -> v1.getNivel() < v2.getNivel() ? 1 : -1);
+            for (VerticeLargura obj : lista) {
                    ordenarMaiorDistancia.add(obj);
             }
     		do {
     			verticeAtual = ordenarMaiorDistancia.first();
 
-    		} while (verticeAtual.getDistancia() != Integer.MAX_VALUE && !lista.isEmpty());
-    		maiorDistancia = verticeAtual.getDistancia() > maiorDistancia ? verticeAtual.getDistancia() : maiorDistancia;
+    		} while (verticeAtual.getNivel() != Integer.MAX_VALUE && !lista.isEmpty());
+    		maiorDistancia = verticeAtual.getNivel() > maiorDistancia ? verticeAtual.getNivel() : maiorDistancia;
     	}
     	return maiorDistancia;
     }

@@ -1,17 +1,27 @@
 package trabalho;
 
 
-public class Vertice {
+public class VerticeProfundidade {
 
 	private String cor;
 	private int distancia;
+	private int distanciaRetorno;
 	private int nome;
 	private Integer verticePai;
 	
-	public Vertice(int nome) {
+	public VerticeProfundidade(int nome) {
 		this.cor = "branco";
 		this.distancia = Integer.MAX_VALUE;
+		this.distanciaRetorno = Integer.MAX_VALUE;
 		this.nome = nome;
+	}
+
+	public int getDistanciaRetorno() {
+		return distanciaRetorno;
+	}
+
+	public void setDistanciaRetorno(int distanciaRetorno) {
+		this.distanciaRetorno = distanciaRetorno;
 	}
 
 	public String getCor() {
@@ -44,6 +54,7 @@ public class Vertice {
 		return "Vertice{" +
 				"cor='" + cor + '\'' +
 				", distancia=" + distancia +
+				", distanciaRetorno=" + distanciaRetorno +
 				", nome=" + nome +
 				", verticePai=" + verticePai +
 				'}';

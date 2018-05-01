@@ -13,12 +13,12 @@ public class Busca {
         this.grafo = grafo;
     }
 
-    public Collection<Vertice> buscaEmLagura(Integer vertice) {
-        HashMap<Integer, Vertice> verticesMarcadores = new HashMap<>();
+    public Collection<VerticeLargura> buscaEmLagura(Integer vertice) {
+        HashMap<Integer, VerticeLargura> verticesMarcadores = new HashMap<>();
         for (Integer key : grafo.getVertices()) {
-            verticesMarcadores.put(key, new Vertice(key));
+            verticesMarcadores.put(key, new VerticeLargura(key));
         }
-        verticesMarcadores.get(vertice).setDistancia(0);
+        verticesMarcadores.get(vertice).setNivel(0);
         verticesMarcadores.get(vertice).setCor("cinza");
         Queue<Integer> fila = new LinkedList<>();
         fila.add(vertice);
@@ -30,7 +30,7 @@ public class Busca {
                     fila.add(verticeAtual);
                     verticesMarcadores.get(verticeAtual).setCor("cinza");
                     verticesMarcadores.get(verticeAtual).setVerticePai(verticePrimeiroFila);
-                    verticesMarcadores.get(verticeAtual).setDistancia(verticesMarcadores.get(verticePrimeiroFila).getDistancia() + 1);
+                    verticesMarcadores.get(verticeAtual).setNivel(verticesMarcadores.get(verticePrimeiroFila).getNivel() + 1);
                 }
             }
             verticesMarcadores.get(verticePrimeiroFila).setCor("preto");
@@ -38,11 +38,11 @@ public class Busca {
         return verticesMarcadores.values();
     }
 //    ./arquivos_teste/grafo1.txt
-    public Collection<Vertice> buscaEmProfundidade(Integer vertice) {
+    public Collection<VerticeProfundidade> buscaEmProfundidade(Integer vertice) {
         int tempo = 0;
-        HashMap<Integer, Vertice> verticesMarcadores = new HashMap<Integer, Vertice>();
+        HashMap<Integer, VerticeProfundidade> verticesMarcadores = new HashMap<Integer, VerticeProfundidade>();
         for (Integer key : grafo.getVertices()) {
-            verticesMarcadores.put(key, new Vertice(key));
+            verticesMarcadores.put(key, new VerticeProfundidade(key));
         }
         verticesMarcadores.get(vertice).setCor("cinza");
         verticesMarcadores.get(vertice).setDistancia(tempo);
@@ -53,10 +53,13 @@ public class Busca {
                 tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
             }
         }
+        tempo += 1;
+        verticesMarcadores.get(vertice).setDistanciaRetorno(tempo);
+        verticesMarcadores.get(vertice).setCor("preto");
         return verticesMarcadores.values();
     }
 
-    private int buscaDSF(Integer vertice, HashMap<Integer, Vertice> verticesMarcadores, int tempo) {
+    private int buscaDSF(Integer vertice, HashMap<Integer, VerticeProfundidade> verticesMarcadores, int tempo) {
         verticesMarcadores.get(vertice).setCor("cinza");
         tempo += 1;
         verticesMarcadores.get(vertice).setDistancia(tempo);
@@ -67,7 +70,8 @@ public class Busca {
                 tempo = buscaDSF(verticeAtual, verticesMarcadores, tempo);
             }
         }
-
+        tempo += 1;
+        verticesMarcadores.get(vertice).setDistanciaRetorno(tempo);
         verticesMarcadores.get(vertice).setCor("preto");
         return tempo;
     }
